@@ -9,6 +9,8 @@ import random
 import math
 from datetime import date, timedelta
 
+from werkzeug.security import generate_password_hash
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(ROOT, 'db', 'stocklens.db')
 
@@ -151,6 +153,9 @@ def seed_all():
     c = conn.cursor()
 
     c.executescript("""
+        DELETE FROM product_classification;
+        DELETE FROM upload_log;
+        DELETE FROM invite_codes;
         DELETE FROM evaluation;
         DELETE FROM decisions;
         DELETE FROM forecast;
@@ -160,14 +165,32 @@ def seed_all():
         DELETE FROM users;
     """)
 
+    c.execute("SELECT company_id FROM companies ORDER BY company_id LIMIT 1")
+    row = c.fetchone()
+    if row is None:
+        c.execute(
+            "INSERT INTO companies (company_name, industry, description) VALUES (?, ?, ?)",
+            ("DEFAULT_COMPANY", "General Retail", "Initial seeded company"),
+        )
+        company_id = c.lastrowid
+    else:
+        company_id = row[0]
+
     # Users
     users = [
-        ("manager1", "pass123", "manager"),
-        ("staff1",   "pass123", "staff"),
-        ("admin",    "admin123", "manager"),
+        ("manager1@stocklens.local", "manager1", "pass123", "manager"),
+        ("staff1@stocklens.local", "staff1", "pass123", "staff"),
+        ("admin@stocklens.local", "admin", "admin123", "manager"),
     ]
     c.executemany(
-        "INSERT INTO users (username, password, role) VALUES (?, ?, ?)", users
+        """
+        INSERT INTO users (company_id, email, username, password_hash, role, is_active)
+        VALUES (?, ?, ?, ?, ?, 1)
+        """,
+        [
+            (company_id, email, username, generate_password_hash(password), role)
+            for email, username, password, role in users
+        ],
     )
 
     start = date(2023, 1, 1)
@@ -176,9 +199,19 @@ def seed_all():
 
     for p in PRODUCTS:
         c.execute("""
-            INSERT INTO products (product_name, category, price, is_active, is_seasonal, season)
-            VALUES (?, ?, ?, ?, ?, ?)
-        """, (p["name"], p["cat"], p["price"], p["active"], p["seasonal"], p["season"]))
+            INSERT INTO products
+                (company_id, product_name, category, purchase_cost, price, is_active, is_seasonal, season)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            company_id,
+            p["name"],
+            p["cat"],
+            round(float(p["price"]) * 0.6, 2),
+            p["price"],
+            p["active"],
+            p["seasonal"],
+            p["season"],
+        ))
         pid = c.lastrowid
 
         # Daily sales
@@ -189,16 +222,16 @@ def seed_all():
             sales_batch.append((pid, current.strftime("%Y-%m-%d"), units))
             current += timedelta(days=1)
         c.executemany(
-            "INSERT INTO sales (product_id, date, units_sold) VALUES (?, ?, ?)",
-            sales_batch
+            "INSERT INTO sales (company_id, product_id, date, units_sold) VALUES (?, ?, ?, ?)",
+            [(company_id, pid, sale_date, units) for pid, sale_date, units in sales_batch],
         )
 
         # Inventory
         stock = INVENTORY.get(p["name"], 50)
         c.execute("""
-            INSERT INTO inventory (product_id, stock_on_hand, last_updated)
-            VALUES (?, ?, DATE('now'))
-        """, (pid, stock))
+            INSERT INTO inventory (company_id, product_id, stock_on_hand, last_updated)
+            VALUES (?, ?, ?, DATE('now'))
+        """, (company_id, pid, stock))
 
     conn.commit()
     conn.close()

@@ -136,6 +136,8 @@ def create_schema():
             actual_demand      REAL,
             accuracy_pct       REAL,
             eval_period        TEXT,
+            naive_mae          REAL,
+            naive_mase         REAL,
             created_at         TEXT DEFAULT (DATETIME('now')),
             FOREIGN KEY (company_id) REFERENCES companies(company_id),
             FOREIGN KEY (product_id) REFERENCES products(product_id)
