@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StockLens Dashboard</title>
+  <link rel="icon" href="{{ url_for('static', filename='brand-icon.png') }}" type="image/png"/>
+  <script>
+    document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+  </script>
+  <script src="{{ url_for('static', filename='vendor/chart.umd.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/lucide.min.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+</head>
+<body>
+
+<div class="app-layout" id="app-layout">
+
+  <!-- ═══════════════════════════════ SIDEBAR ══════════════════════════════ -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <div class="logo-icon"><img src="{{ url_for('static', filename='brand-icon.png') }}" alt="" /></div>
+        <span class="logo-text">StockLens</span>
+      </div>
+    </div>
+
+    <ul class="nav-links">
+      <li class="nav-section-label">Daily</li>
+      <li><a href="#" class="nav-link active" data-tab="overview">
+        <span class="nav-icon"><i data-lucide="layout-dashboard"></i></span>
+        <span class="nav-label" data-i18n="nav.overview">Overview</span>
+      </a></li>
+      {% if role == 'manager' %}
+      <li><a href="#" class="nav-link" data-tab="products">
+        <span class="nav-icon"><i data-lucide="package"></i></span>
+        <span class="nav-label" data-i18n="nav.products">Products</span>
+      </a></li>
+      {% endif %}
+      <li><a href="#" class="nav-link" data-tab="inventory">
+        <span class="nav-icon"><i data-lucide="warehouse"></i></span>
+        <span class="nav-label" data-i18n="nav.inventory">Inventory</span>
+      </a></li>
+      {% if role == 'manager' %}
+      <li><a href="#" class="nav-link" data-tab="upload">
+        <span class="nav-icon"><i data-lucide="upload-cloud"></i></span>
+        <span class="nav-label">Upload Data</span>
+      </a></li>
+      <li><a href="#" class="nav-link" data-tab="manual">
+        <span class="nav-icon"><i data-lucide="pencil-line"></i></span>
+        <span class="nav-label" data-i18n="nav.manual">Manual Entry</span>
+      </a></li>
+      {% endif %}
+      <li><a href="#" class="nav-link" data-tab="decisions">
+        <span class="nav-icon"><i data-lucide="zap"></i></span>
+        <span class="nav-label" data-i18n="nav.decisions">Decisions</span>
+        <span class="nav-badge" id="decisions-badge" style="display:none;"></span>
+      </a></li>
+      <li><a href="#" class="nav-link" data-tab="analytics">
+        <span class="nav-icon"><i data-lucide="bar-chart-2"></i></span>
+        <span class="nav-label" data-i18n="nav.analytics">Analytics</span>
+      </a></li>
+      {% if role == 'manager' %}
+      <li class="nav-section-label" data-i18n="nav.managerSection">Manager</li>
+      <li><a href="#" class="nav-link" data-tab="forecast">
+        <span class="nav-icon"><i data-lucide="trending-up"></i></span>
+        <span class="nav-label" data-i18n="nav.forecast">Forecast</span>
+      </a></li>
+      <li><a href="#" class="nav-link" data-tab="evaluation">
+        <span class="nav-icon"><i data-lucide="target"></i></span>
+        <span class="nav-label" data-i18n="nav.evaluation">Evaluation</span>
+      </a></li>
+      <li><a href="#" class="nav-link" data-tab="scenario">
+        <span class="nav-icon"><i data-lucide="flask-conical"></i></span>
+        <span class="nav-label" data-i18n="nav.scenario">Scenarios</span>
+      </a></li>
+      <li><a href="#" class="nav-link" data-tab="classification">
+        <span class="nav-icon"><i data-lucide="grid-3x3"></i></span>
+        <span class="nav-label">ABC-XYZ</span>
+      </a></li>
+      <li><a href="#" class="nav-link" data-tab="team">
+        <span class="nav-icon"><i data-lucide="users"></i></span>
+        <span class="nav-label">Team</span>
+      </a></li>
+      {% endif %}
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="user-pill">
+        <span class="role-dot role-{{ role }}"></span>
+        <span class="user-name">{{ username }}</span>
+        <span class="role-tag">{{ role }}</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ════════════════════════════ MAIN CONTENT ════════════════════════════ -->
+  <main class="main-content">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <button class="menu-toggle" id="menu-toggle" title="Toggle sidebar" data-i18n-title="common.toggleSidebar">
+        <i data-lucide="menu" style="width:18px;height:18px;"></i>
+      </button>
+      <div class="company-chip">{{ company_name }}</div>
+
+      <div class="topbar-right">
+        <select id="lang-select" class="lang-select" title="Language" data-i18n-title="common.language">
+          <option value="en">🇬🇧 EN</option>
+          <option value="es">🇪🇸 ES</option>
+          <option value="ar">🇸🇦 AR</option>
+          <option value="fr">🇫🇷 FR</option>
+          <option value="de">🇩🇪 DE</option>
+          <option value="pt">🇧🇷 PT</option>
+          <option value="hi">🇮🇳 HI</option>
+          <option value="ur">🇵🇰 UR</option>
+          <option value="tr">🇹🇷 TR</option>
+          <option value="bn">🇧🇩 BN</option>
+          <option value="zh">🇨🇳 ZH</option>
+          <option value="id">🇮🇩 ID</option>
+          <option value="th">🇹🇭 TH</option>
+          <option value="vi">🇻🇳 VI</option>
+        </select>
+        <button id="theme-toggle" class="theme-btn" title="Toggle theme" data-i18n-title="common.toggleTheme">
+          <i data-lucide="moon" id="theme-icon" style="width:16px;height:16px;"></i>
+        </button>
+        <button id="logout-btn" class="btn btn-sm btn-outline" data-i18n="nav.logout">Logout</button>
+      </div>
+    </header>
+
+    <!-- PAGE TITLE -->
+    <div class="page-header" id="page-title-bar">
+      <h1 class="page-title" id="page-title" data-i18n="page.overview">Overview</h1>
+    </div>
+
+    <!-- ─────────────────────────── OVERVIEW ──────────────────────────── -->
+    <div class="tab-panel active" id="tab-overview">
+
+      <!-- Welcome banner (injected by JS on first visit) -->
+      <div id="welcome-banner-section"></div>
+
+      <!-- Urgent Actions (injected by JS) -->
+      <div id="urgent-actions-section"></div>
+
+      <!-- Freshness signal (injected by JS) -->
+      <div id="freshness-bar"></div>
+
+      <!-- Data quality signal (injected by JS) -->
+      <div id="data-quality-section"></div>
+
+      <!-- Today's action plan (injected by JS) -->
+      <div id="today-action-section"></div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon" style="background:rgba(16,163,74,0.12);">
+            <i data-lucide="package" style="width:20px;height:20px;stroke:var(--semantic-positive);"></i>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-label" data-i18n="kpi.totalProducts">Total Products</div>
+            <div class="kpi-value text-positive" id="kpi-total">—</div>
+          </div>
+        </div>
+        <div class="kpi-card accent-green">
+          <div class="kpi-icon" style="background:rgba(16,163,74,0.12);">
+            <i data-lucide="check-circle-2" style="width:20px;height:20px;stroke:var(--semantic-positive);"></i>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-label" data-i18n="kpi.activeProducts">Active Products</div>
+            <div class="kpi-value text-positive" id="kpi-active">—</div>
+          </div>
+        </div>
+        <div class="kpi-card accent-red">
+          <div class="kpi-icon" style="background:rgba(220,38,38,0.12);">
+            <i data-lucide="alert-triangle" style="width:20px;height:20px;stroke:var(--semantic-critical);"></i>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-label" data-i18n="kpi.reorderNow">Reorder Now</div>
+            <div class="kpi-value text-critical" id="kpi-reorder">—</div>
+          </div>
+        </div>
+        <div class="kpi-card accent-neutral">
+          <div class="kpi-icon" style="background:rgba(61,133,101,0.12);">
+            <i data-lucide="pound-sterling" style="width:20px;height:20px;stroke:var(--accent);"></i>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-label" data-i18n="kpi.inventoryValue">Inventory Value</div>
+            <div class="kpi-value text-neutral" id="kpi-value">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-2col">
+        <div class="card">
+          <div class="card-header-row">
+            <h3 class="card-title" data-i18n="card.decisionBreakdown">Decision Breakdown</h3>
+            <button class="card-nav-link" onclick="switchTab('decisions')">View all →</button>
+          </div>
+          <div id="decision-breakdown"></div>
+        </div>
+        <div class="card">
+          <div class="card-header-row">
+            <h3 class="card-title" data-i18n="card.riskBreakdown">Risk Overview</h3>
+            <button class="card-nav-link" onclick="switchTab('inventory')">View inventory →</button>
+          </div>
+          <div id="risk-breakdown"></div>
+        </div>
+      </div>
+
+      <!-- Smart Recommendations (injected by JS) -->
+      <div id="recommendations-section"></div>
+
+      <div class="row-2col" style="margin-bottom:0;">
+        <div class="card" style="margin-bottom:0;">
+          <h3 class="card-title">Low Stock Alerts</h3>
+          <div id="overview-alerts"></div>
+        </div>
+        <div class="card" style="margin-bottom:0;">
+          <h3 class="card-title">Recent Activity</h3>
+          <div id="activity-feed" class="activity-feed"></div>
+        </div>
+      </div>
+
+      <!-- Pending Orders Tracker (injected by JS for managers) -->
+      <div id="pending-orders-section"></div>
+
+      {% if role == 'manager' %}
+      <!-- Upload Card -->
+      <div class="card upload-card" id="upload-section">
+        <div class="upload-header">
+          <div>
+            <h3 class="card-title">Upload Sales Data</h3>
+            <p class="card-desc">
+              Upload CSV or Excel (.xlsx) files — new products are created automatically,
+              duplicate rows are skipped, and forecasts recalculate immediately.
+            </p>
+          </div>
+          <a href="/api/upload/sample-csv" class="btn btn-sm btn-outline">
+            <i data-lucide="download" style="width:14px;height:14px;margin-right:4px;"></i>Template
+          </a>
+        </div>
+
+        <div class="upload-format">
+          <span>Required columns (any common name works):</span>
+          <code>date &nbsp;|&nbsp; product_name &nbsp;|&nbsp; units_sold</code>
+          <span style="color:var(--text-muted);font-size:12px;">
+            Optional: <code>stock_on_hand</code> &nbsp;|&nbsp; <code>selling_price</code>
+          </span>
+        </div>
+
+        <div class="upload-drop-zone" id="upload-drop-zone">
+          <input type="file" id="upload-input" multiple accept=".csv,.xlsx,.xls" style="display:none" />
+          <div class="upload-drop-inner" id="upload-drop-inner">
+            <div class="upload-icon">
+              <i data-lucide="folder-open" style="width:32px;height:32px;stroke:var(--accent);"></i>
+            </div>
+            <p class="upload-hint">Drag &amp; drop CSV or Excel files here, or tap/click to browse</p>
+            <p class="upload-sub">Multiple files &bull; CSV &bull; XLSX &bull; Duplicates auto-skipped</p>
+          </div>
+        </div>
+
+        <div id="upload-file-list" class="upload-file-list"></div>
+
+        <div class="upload-actions" id="upload-actions" style="display:none">
+          <button class="btn btn-secondary" id="upload-preview-btn">
+            <i data-lucide="eye" style="width:14px;height:14px;margin-right:4px;"></i>Preview
+          </button>
+          <button class="btn btn-primary" id="upload-submit-btn">
+            <i data-lucide="upload" style="width:14px;height:14px;margin-right:4px;"></i>Upload &amp; Process
+          </button>
+          <button class="btn btn-outline" id="upload-clear-btn">Clear</button>
+        </div>
+
+        <!-- Pipeline progress indicator (hidden until upload starts) -->
+        <div id="pipeline-progress" style="display:none;margin-top:16px;">
+          <div class="pipeline-progress-header">
+            <span id="pipeline-progress-label" class="pipeline-progress-label">Uploading…</span>
+            <span id="pipeline-progress-pct" class="pipeline-progress-pct">0%</span>
+          </div>
+          <div class="pipeline-progress-bar">
+            <div class="pipeline-progress-fill" id="pipeline-progress-fill"></div>
+          </div>
+          <div id="pipeline-progress-steps" class="pipeline-progress-steps"></div>
+        </div>
+
+        <div id="upload-result" class="upload-result" style="display:none"></div>
+      </div>
+
+      <!-- Upload History -->
+      <div class="card" id="upload-history-card" style="margin-top:16px">
+        <h3 class="card-title" style="margin-bottom:12px">Upload History</h3>
+        <div class="table-wrap">
+          <table class="data-table" id="upload-history-table">
+            <thead><tr>
+              <th>File</th><th>Uploaded By</th><th>Rows Added</th>
+              <th>New Products</th><th>Duplicates Skipped</th><th>Stock Updates</th><th>Date</th>
+            </tr></thead>
+            <tbody id="upload-history-body">
+              <tr><td colspan="7" class="loading-cell">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    {% if role == 'manager' %}
+    <!-- ─────────────────────────── UPLOAD ────────────────────────────── -->
+    <div class="tab-panel" id="tab-upload">
+      <div id="upload-tab-mount"></div>
+    </div>
+    {% endif %}
+
+    <!-- Preview Modal -->
+    <div id="upload-preview-modal" style="display:none;position:fixed;inset:0;z-index:1000;
+         background:rgba(0,0,0,.55);align-items:center;justify-content:center">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);
+                  padding:28px;max-width:680px;width:90%;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-lg);">
+        <h3 style="margin:0 0 16px;font-size:16px;font-weight:600;">Preview — confirm before uploading</h3>
+        <div id="preview-modal-body"></div>
+        <div style="display:flex;gap:12px;margin-top:20px;">
+          <button class="btn btn-primary" id="preview-confirm-btn">
+            <i data-lucide="check" style="width:14px;height:14px;margin-right:4px;"></i>Confirm &amp; Upload
+          </button>
+          <button class="btn btn-outline" id="preview-cancel-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────── PRODUCTS ──────────────────────────── -->
+    <div class="tab-panel" id="tab-products">
+      <div class="table-toolbar">
+        <input type="text" id="product-search" class="search-input"
+               placeholder="Search products…" data-i18n-placeholder="search.products"/>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="products-table">
+          <thead>
+            <tr>
+              <th data-i18n="th.product">Product</th>
+              <th class="mobile-hide">SKU</th>
+              <th data-i18n="th.category">Category</th>
+              <th class="mobile-hide">Purchase Cost</th>
+              <th class="mobile-hide">Selling Price</th>
+              <th data-i18n="th.stock">Stock</th>
+              <th class="mobile-hide" data-i18n="th.seasonal">Seasonal</th>
+              <th data-i18n="th.status">Status</th>
+              <th data-i18n="th.decision">Decision</th>
+              {% if role == 'manager' %}<th data-i18n="th.action">Action</th>{% endif %}
+            </tr>
+          </thead>
+          <tbody id="products-body">
+            <tr><td colspan="{% if role == 'manager' %}10{% else %}9{% endif %}" class="loading-cell">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────── INVENTORY ─────────────────────────── -->
+    <div class="tab-panel" id="tab-inventory">
+      <div class="table-toolbar">
+        <input type="text" id="inventory-search" class="search-input"
+               placeholder="Search inventory…" data-i18n-placeholder="search.inventory"/>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="inventory-table">
+          <thead>
+            <tr>
+              <th data-i18n="th.product">Product</th>
+              <th data-i18n="th.category">Category</th>
+              <th data-i18n="th.stock">Stock on Hand</th>
+              <th class="mobile-hide" data-i18n="th.stockBar">Level</th>
+              <th class="mobile-hide" data-i18n="th.reorderPoint">Reorder Point</th>
+              <th class="mobile-hide">Reorder Qty</th>
+              <th data-i18n="th.risk">Risk</th>
+              <th class="mobile-hide" data-i18n="th.lastUpdated">Last Updated</th>
+            </tr>
+          </thead>
+          <tbody id="inventory-body">
+            <tr><td colspan="8" class="loading-cell">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────── DECISIONS ─────────────────────────── -->
+    <div class="tab-panel" id="tab-decisions">
+      <!-- Pending orders summary bar (injected by JS for managers) -->
+      <div id="decisions-pending-bar"></div>
+      {% if role == 'manager' %}
+      <div class="decision-toolbar">
+        <div>
+          <h3 class="card-title">Decision worklist</h3>
+          <p class="card-desc">Export a buying list or expand any row to see the calculation behind the recommendation.</p>
+        </div>
+        <div class="decision-filters" aria-label="Decision filters" data-i18n-aria="decision.filters">
+          <button class="decision-filter active" data-decision-filter="ALL" onclick="setDecisionFilter('ALL')">All</button>
+          <button class="decision-filter" data-decision-filter="REORDER" onclick="setDecisionFilter('REORDER')">Reorder</button>
+          <button class="decision-filter" data-decision-filter="AT_RISK" onclick="setDecisionFilter('AT_RISK')">At Risk</button>
+          <button class="decision-filter" data-decision-filter="OVERSTOCK" onclick="setDecisionFilter('OVERSTOCK')">Overstock</button>
+          <button class="decision-filter" data-decision-filter="HOLD" onclick="setDecisionFilter('HOLD')">Hold</button>
+        </div>
+        <a class="btn btn-secondary" href="/api/decisions/export.csv">
+          <i data-lucide="download" style="width:14px;height:14px;"></i>
+          Export CSV
+        </a>
+        <button class="btn btn-outline" onclick="showDecisionHistory()">
+          <i data-lucide="history" style="width:14px;height:14px;"></i>
+          History
+        </button>
+      </div>
+      {% endif %}
+      <div class="table-toolbar">
+        <input type="text" id="decision-search" class="search-input"
+               placeholder="Search decisions…" data-i18n-placeholder="search.decisions"/>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th data-i18n="th.product">Product</th>
+              <th data-i18n="th.category">Category</th>
+              <th data-i18n="th.action">Decision</th>
+              {% if role != 'manager' %}
+              <th class="mobile-hide">Stock</th>
+              <th class="mobile-hide">Order Qty</th>
+              {% endif %}
+              {% if role == 'manager' %}
+              <th class="mobile-hide" data-i18n="th.forecastDemand">Forecast Demand</th>
+              <th class="mobile-hide">Confidence</th>
+              <th class="mobile-hide">Reason</th>
+              <th class="mobile-hide">Mark Ordered</th>
+              <th class="mobile-hide" style="width:32px"></th>
+              {% endif %}
+            </tr>
+          </thead>
+          <tbody id="decisions-body">
+            <tr><td colspan="{% if role == 'manager' %}8{% else %}5{% endif %}" class="loading-cell">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────── ANALYTICS ─────────────────────────── -->
+    <div class="tab-panel" id="tab-analytics">
+      <div class="charts-grid">
+        <div class="card chart-card">
+          <h3 class="card-title" data-i18n="card.salesTrend">Sales Trend — Last 30 Days</h3>
+          <div class="chart-wrap chart-wrap--tall"><canvas id="chart-sales"></canvas></div>
+        </div>
+        <div class="card chart-card">
+          <h3 class="card-title" data-i18n="card.forecastVsActual">Forecast vs Actual Demand</h3>
+          <div class="chart-wrap chart-wrap--tall"><canvas id="chart-fva"></canvas></div>
+        </div>
+        {% if role != 'manager' %}
+        <div class="card chart-card">
+          <h3 class="card-title">Decision Snapshot</h3>
+          <p class="card-desc" style="margin-bottom:0;">
+            Use the Decisions tab for product-level action priorities and Alerts.
+          </p>
+        </div>
+        {% endif %}
+        <div class="card chart-card">
+          <h3 class="card-title">Category Breakdown</h3>
+          <div class="chart-wrap"><canvas id="chart-category"></canvas></div>
+        </div>
+        <div class="card chart-card">
+          <h3 class="card-title">Top Products</h3>
+          <div class="chart-wrap"><canvas id="chart-top-products"></canvas></div>
+        </div>
+        <div class="card chart-card chart-wide">
+          <h3 class="card-title" data-i18n="card.inventoryLevels">Inventory Levels vs Reorder Points</h3>
+          <div class="chart-wrap"><canvas id="chart-inventory"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    {% if role == 'manager' %}
+    <!-- ─────────────────────────── FORECAST ──────────────────────────── -->
+    <div class="tab-panel" id="tab-forecast">
+      <!-- Model insight panel (injected by JS after forecast loads) -->
+      <div id="forecast-model-insight"></div>
+
+      <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
+        <button class="btn btn-primary" id="forecast-run-btn">
+          <i data-lucide="play" style="width:14px;height:14px;margin-right:6px;"></i>Run Full Pipeline
+        </button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th class="mobile-hide">Category</th>
+              <th class="mobile-hide">Model</th>
+              <th>Daily Demand</th>
+              <th class="mobile-hide">95% Range</th>
+              <th class="mobile-hide">Safety Stock</th>
+              <th>Reorder Point</th>
+              <th class="mobile-hide">EOQ</th>
+              <th class="mobile-hide">Trend</th>
+              <th class="mobile-hide">Stockout %</th>
+              <th>Risk</th>
+            </tr>
+          </thead>
+          <tbody id="forecast-body">
+            <tr><td colspan="11" class="loading-cell">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────── EVALUATION ────────────────────────── -->
+    <div class="tab-panel" id="tab-evaluation">
+      <div class="eval-summary card" id="eval-summary"></div>
+      <div class="table-wrap" style="margin-top:24px;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Predicted</th>
+              <th>Actual</th>
+              <th>MAE</th>
+              <th class="mobile-hide">Naïve MAE</th>
+              <th class="mobile-hide">RMSE</th>
+              <th class="mobile-hide">Bias</th>
+              <th>MASE</th>
+              <th class="mobile-hide">Tracking Signal</th>
+              <th>Accuracy</th>
+              <th class="mobile-hide">Period</th>
+            </tr>
+          </thead>
+          <tbody id="evaluation-body">
+            <tr><td colspan="12" class="loading-cell">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────── SCENARIOS ─────────────────────────── -->
+    <div class="tab-panel" id="tab-scenario">
+      <div class="card" style="margin-bottom:20px;">
+        <h3 class="card-title" style="margin-bottom:8px;">What-If Scenario Builder</h3>
+        <p class="card-desc" style="margin-bottom:16px;">
+          Simulate how your inventory performs under different conditions — without affecting live data.
+        </p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;">
+          <div>
+            <label style="font-size:13px;font-weight:500;display:block;margin-bottom:6px;">Demand Shock</label>
+            <select id="scenario-demand" class="scenario-select">
+              <option value="0.7">−30% (slump)</option>
+              <option value="0.85">−15%</option>
+              <option value="1.0" selected>Baseline (no change)</option>
+              <option value="1.15">+15%</option>
+              <option value="1.3">+30% (promotion)</option>
+              <option value="1.5">+50% (peak season)</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:13px;font-weight:500;display:block;margin-bottom:6px;">Lead Time (days)</label>
+            <select id="scenario-leadtime" class="scenario-select">
+              <option value="3">3 days (fast)</option>
+              <option value="7" selected>7 days (standard)</option>
+              <option value="14">14 days (slow)</option>
+              <option value="21">21 days (disruption)</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:13px;font-weight:500;display:block;margin-bottom:6px;">Horizon</label>
+            <select id="scenario-horizon" class="scenario-select">
+              <option value="30">30 days</option>
+              <option value="60">60 days</option>
+              <option value="90" selected>90 days</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" id="scenario-run-btn">
+            <i data-lucide="play" style="width:14px;height:14px;margin-right:6px;"></i>Run Simulation
+          </button>
+        </div>
+        <div id="scenario-builder-result" style="margin-top:14px;font-size:13px;color:var(--text-muted);"></div>
+      </div>
+
+      <div class="card" style="margin-bottom:20px;">
+        <h3 class="card-title" style="margin-bottom:4px;">Pre-computed Baseline (90-day)</h3>
+        <p class="card-desc" style="margin-bottom:0;">
+          Without system: reactive (reorder only at stockout). With system: proactive (reorder at reorder point).
+        </p>
+      </div>
+      <div class="card chart-card" style="margin-bottom:24px;">
+        <h3 class="card-title">Stockout Days Comparison</h3>
+        <div class="chart-wrap chart-wrap--tall"><canvas id="chart-scenario"></canvas></div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Stockout (Without)</th>
+              <th>Stockout (With)</th>
+              <th class="mobile-hide">Overstock (Without)</th>
+              <th class="mobile-hide">Overstock (With)</th>
+              <th class="mobile-hide">Reorders (Without)</th>
+              <th class="mobile-hide">Reorders (With)</th>
+              <th class="mobile-hide">Adjusted Reorder Qty</th>
+              <th>Improvement</th>
+            </tr>
+          </thead>
+          <tbody id="scenario-body">
+            <tr><td colspan="9" class="loading-cell">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────── ABC-XYZ ───────────────────────────── -->
+    <div class="tab-panel" id="tab-classification">
+      <div class="card" style="margin-bottom:20px;">
+        <h3 class="card-title" style="margin-bottom:8px;">ABC-XYZ Inventory Classification</h3>
+        <p class="card-desc">
+          <strong>ABC</strong> = revenue contribution over last 90 days:
+          A = top 80% · B = next 15% · C = bottom 5%.<br>
+          <strong>XYZ</strong> = demand variability (CV):
+          X = stable (CV&lt;0.5) · Y = moderate · Z = erratic (CV≥1.0).<br>
+          Combined class determines review frequency and ordering strategy.
+        </p>
+      </div>
+      <div id="abc-xyz-matrix" style="margin-bottom:20px;"></div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th class="mobile-hide">Category</th>
+              <th>ABC</th>
+              <th>XYZ</th>
+              <th>Class</th>
+              <th class="mobile-hide">Revenue %</th>
+              <th class="mobile-hide">CV (variability)</th>
+              <th class="mobile-hide">Review Frequency</th>
+              <th class="mobile-hide">Strategy</th>
+            </tr>
+          </thead>
+          <tbody id="classification-body">
+            <tr><td colspan="9" class="loading-cell">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ─────────────────────────── MANUAL ENTRY ────────────────────── -->
+    <div class="tab-panel" id="tab-manual">
+
+      <!-- ── Create Product ──────────────────────────────────────────────── -->
+      <div class="card" id="manual-create-card">
+        <div class="card-header-row">
+          <div>
+            <h3 class="card-title" data-i18n="manual.createProduct">Create Product</h3>
+            <p class="card-desc" data-i18n="manual.createDesc">
+              Add a new product that you will track sales for manually.
+            </p>
+          </div>
+          <button class="btn btn-sm btn-outline" id="manual-create-toggle"
+                  onclick="toggleManualCreateForm()">
+            <i data-lucide="plus" style="width:14px;height:14px;margin-right:4px;"></i>
+            <span data-i18n="manual.newProduct">New Product</span>
+          </button>
+        </div>
+
+        <div id="manual-create-form" style="display:none;margin-top:16px;">
+          <div class="manual-form-grid">
+            <div class="form-field">
+              <label class="form-label" data-i18n="manual.productName">Product Name *</label>
+              <input class="form-input" id="manual-product-name" type="text"
+                     placeholder="e.g. Cola 330ml" data-i18n-placeholder="search.manualProduct" maxlength="120" />
+            </div>
+            <div class="form-field">
+              <label class="form-label" data-i18n="manual.category">Category</label>
+              <input class="form-input" id="manual-product-category" type="text"
+                     placeholder="Auto-filled, editable" data-i18n-placeholder="search.manualCategory" maxlength="80" />
+            </div>
+            <div class="form-field">
+              <label class="form-label" data-i18n="manual.currentStock">Current Stock</label>
+              <input class="form-input" id="manual-product-stock" type="number"
+                     min="0" step="1" value="0" />
+            </div>
+            <div class="form-field">
+              <label class="form-label">Purchase Cost (£, optional)</label>
+              <input class="form-input" id="manual-product-purchase-cost" type="number"
+                     min="0" step="0.01" placeholder="0.00" />
+            </div>
+            <div class="form-field">
+              <label class="form-label">Selling Price (£, optional)</label>
+              <input class="form-input" id="manual-product-selling-price" type="number"
+                     min="0" step="0.01" placeholder="0.00" />
+            </div>
+          </div>
+          <div class="manual-form-actions">
+            <button class="btn btn-primary" id="manual-create-btn" onclick="submitManualProduct()">
+              <i data-lucide="save" style="width:14px;height:14px;margin-right:4px;"></i>
+              <span data-i18n="manual.createProductBtn">Create Product</span>
+            </button>
+            <button class="btn btn-outline" onclick="toggleManualCreateForm()">
+              <span data-i18n="upload.clear">Clear</span>
+            </button>
+          </div>
+          <div id="manual-create-result" style="margin-top:10px;"></div>
+        </div>
+      </div>
+
+      <!-- ── Product Selector ────────────────────────────────────────────── -->
+      <div class="card" id="manual-select-card" style="margin-top:0;">
+        <h3 class="card-title" data-i18n="manual.yourProducts">Your Manually-Tracked Products</h3>
+        <div id="manual-product-list">
+          <div class="loading-cell" style="padding:12px;">Loading…</div>
+        </div>
+      </div>
+
+      <!-- ── Sales Entry + Timeline (revealed after product selected) ──── -->
+      <div id="manual-product-workspace" style="display:none;">
+
+        <!-- product header -->
+        <div class="card manual-workspace-header">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+            <div>
+              <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;"
+                   data-i18n="manual.workingOn">Working on</div>
+              <div id="manual-selected-name"
+                   style="font-size:18px;font-weight:700;color:var(--accent);"></div>
+              <div id="manual-data-status"
+                   style="font-size:13px;color:var(--text-muted);margin-top:4px;"></div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn btn-primary" id="manual-pipeline-btn"
+                      onclick="runManualPipeline()">
+                <i data-lucide="play" style="width:14px;height:14px;margin-right:4px;"></i>
+                <span data-i18n="manual.runPipeline">Generate Forecast &amp; Decision</span>
+              </button>
+              <button class="btn btn-outline" onclick="clearManualSelection()">
+                <span data-i18n="manual.changeProduct">Change Product</span>
+              </button>
+            </div>
+          </div>
+          <div id="manual-pipeline-result" style="margin-top:12px;display:none;"></div>
+        </div>
+
+        <!-- add sales entry -->
+        <div class="card" style="margin-top:0;">
+          <h3 class="card-title" data-i18n="manual.addSales">Add Sales Entry</h3>
+          <p class="card-desc" data-i18n="manual.addSalesDesc">
+            Enter the number of units sold on a given day. You can update a date by re-entering it.
+          </p>
+          <div class="manual-form-grid" style="margin-top:14px;">
+            <div class="form-field">
+              <label class="form-label" data-i18n="manual.date">Date *</label>
+              <input class="form-input" id="manual-sales-date" type="date" />
+            </div>
+            <div class="form-field">
+              <label class="form-label" data-i18n="manual.unitsSold">Units Sold *</label>
+              <input class="form-input" id="manual-sales-units" type="number"
+                     min="0" step="1" placeholder="0" />
+            </div>
+          </div>
+          <div class="manual-form-actions" style="margin-top:12px;">
+            <button class="btn btn-primary" onclick="submitManualSales()">
+              <i data-lucide="plus-circle" style="width:14px;height:14px;margin-right:4px;"></i>
+              <span data-i18n="manual.saveEntry">Save Entry</span>
+            </button>
+            <button class="btn btn-secondary" onclick="setTodayDate()">
+              <span data-i18n="manual.today">Today</span>
+            </button>
+          </div>
+          <div id="manual-sales-result" style="margin-top:10px;"></div>
+        </div>
+
+        <!-- timeline table -->
+        <div class="card" style="margin-top:0;">
+          <div class="card-header-row">
+            <h3 class="card-title" data-i18n="manual.timeline">Sales Timeline</h3>
+            <span id="manual-timeline-meta"
+                  style="font-size:12px;color:var(--text-muted);"></span>
+          </div>
+          <div class="table-wrap" style="margin-top:12px;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th data-i18n="th.date">Date</th>
+                  <th data-i18n="manual.unitsSold">Units Sold</th>
+                  <th data-i18n="manual.entryType">Type</th>
+                </tr>
+              </thead>
+              <tbody id="manual-timeline-body">
+                <tr><td colspan="3" class="loading-cell">Select a product to see timeline.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div><!-- end workspace -->
+    </div><!-- end tab-manual -->
+
+    <!-- ─────────────────────────── TEAM ──────────────────────────────── -->
+    <div class="tab-panel" id="tab-team">
+      <div class="card" style="margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+        <div>
+          <h3 class="card-title" style="margin-bottom:6px;">Team Management</h3>
+          <p class="card-desc" style="margin-bottom:0;">Invite staff, change roles, and run a full company pipeline refresh.</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-secondary" id="team-generate-invite-btn">
+            <i data-lucide="user-plus" style="width:14px;height:14px;margin-right:4px;"></i>Generate Invite Code
+          </button>
+          <button class="btn btn-outline" id="team-run-pipeline-btn">
+            <i data-lucide="refresh-cw" style="width:14px;height:14px;margin-right:4px;"></i>Re-run Pipeline
+          </button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+          <div>
+            <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Latest Invite</div>
+            <div id="team-invite-code" style="font-family:'SF Mono','Fira Code',monospace;font-size:26px;font-weight:700;letter-spacing:2px;color:var(--accent);">------</div>
+            <div id="team-invite-expiry" style="font-size:12px;color:var(--text-muted);margin-top:4px;"></div>
+          </div>
+          <div id="team-status" style="font-size:13px;color:var(--text-muted);"></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-header-row">
+          <div>
+            <h3 class="card-title">Company Settings</h3>
+            <p class="card-desc">Currency, exports, and deletion controls.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin-top:10px;">
+          <div class="form-field" style="width:150px;">
+            <label for="company-currency-symbol">Currency symbol</label>
+            <input class="form-input" id="company-currency-symbol" maxlength="4" value="{{ currency_symbol }}" />
+          </div>
+          <button class="btn btn-primary" id="company-save-settings-btn">Save Settings</button>
+          <a class="btn btn-outline" href="/api/company/export">Export Company Data</a>
+          <a class="btn btn-outline" href="/api/account/export">Export My Account</a>
+          <button class="btn btn-outline" id="email-resend-btn">Resend Verification</button>
+          <button class="btn btn-danger" id="company-delete-btn">Delete Company Data</button>
+          <button class="btn btn-outline" id="account-delete-btn">Delete My Account</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th class="mobile-hide">Email</th>
+              <th>Role</th>
+              <th class="mobile-hide">Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="team-body">
+            <tr><td colspan="5" class="loading-cell">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+
+  </main><!-- end main-content -->
+</div><!-- end app-layout -->
+
+<!-- ─────────────── REORDER / PRODUCT ACTION MODAL ───────────────── -->
+<div id="reorder-modal" class="product-modal">
+  <div class="product-modal-card">
+    <div class="product-modal-header">
+      <h3 id="reorder-modal-title">Pending Orders — Confirm Deliveries</h3>
+      <button class="product-modal-close" type="button" onclick="closeProductModal()">✕</button>
+    </div>
+    <div id="reorder-modal-body"></div>
+  </div>
+</div>
+<div id="toast-root" class="toast-root" aria-live="polite"></div>
+
+<!-- ─────────────────────── BOTTOM NAV (mobile) ──────────────────────── -->
+<nav class="bottom-nav">
+  {% if role == 'manager' %}
+  <a href="#" class="bottom-nav-link nav-link active" data-tab="overview"><i data-lucide="layout-dashboard"></i><span>Overview</span></a>
+  <a href="#" class="bottom-nav-link nav-link" data-tab="decisions"><i data-lucide="zap"></i><span>Decisions</span></a>
+  <a href="#" class="bottom-nav-link nav-link" data-tab="inventory"><i data-lucide="warehouse"></i><span>Inventory</span></a>
+  <a href="#" class="bottom-nav-link" id="mobile-more-btn"><i data-lucide="more-horizontal"></i><span>More</span></a>
+  {% else %}
+  <a href="#" class="bottom-nav-link nav-link active" data-tab="decisions"><i data-lucide="zap"></i><span>Decisions</span></a>
+  <a href="#" class="bottom-nav-link nav-link" data-tab="inventory"><i data-lucide="warehouse"></i><span>Inventory</span></a>
+  <a href="#" class="bottom-nav-link nav-link" data-tab="analytics"><i data-lucide="bar-chart-2"></i><span>Analytics</span></a>
+  <a href="#" class="bottom-nav-link nav-link" data-tab="overview"><i data-lucide="check-square"></i><span>Overview</span></a>
+  {% endif %}
+</nav>
+
+{% if role == 'manager' %}
+<div class="mobile-drawer" id="mobile-drawer">
+  <div class="mobile-drawer-sheet">
+    <div class="mobile-drawer-title">More Sections</div>
+    <div class="mobile-drawer-links">
+      <a href="#" class="mobile-drawer-link nav-link" data-tab="products">Products</a>
+      <a href="#" class="mobile-drawer-link nav-link" data-tab="upload">Upload Data</a>
+      <a href="#" class="mobile-drawer-link nav-link" data-tab="manual">Manual Entry</a>
+      <a href="#" class="mobile-drawer-link nav-link" data-tab="forecast">Forecast</a>
+      <a href="#" class="mobile-drawer-link nav-link" data-tab="analytics">Analytics</a>
+      <a href="#" class="mobile-drawer-link nav-link" data-tab="evaluation">Evaluation</a>
+      <a href="#" class="mobile-drawer-link nav-link" data-tab="scenario">Scenarios</a>
+      <a href="#" class="mobile-drawer-link nav-link" data-tab="classification">ABC-XYZ</a>
+      <a href="#" class="mobile-drawer-link nav-link" data-tab="team">Team</a>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<script>
+  // Pass server-side role to JS
+  window.STOCKLENS_ROLE      = '{{ role }}';
+  window.STOCKLENS_USER_NAME = '{{ username }}';
+  window.STOCKLENS_CURRENCY_SYMBOL = '{{ currency_symbol }}';
+  window.STOCKLENS_CSRF_TOKEN = '{{ csrf_token }}';
+</script>
+<script src="{{ url_for('static', filename='js/translations.js') }}"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

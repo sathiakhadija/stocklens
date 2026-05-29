@@ -1,0 +1,183 @@
+date,product_name,units_sold
+2025-01-01,Batteries AA 4pk,3
+2025-01-01,Bottled Water 500ml,4
+2025-01-01,Chocolate Bar,14
+2025-01-01,Cola 330ml,20
+2025-01-01,Greeting Cards,2
+2025-01-01,Ground Coffee 200g,3
+2025-01-01,Milk 2L,15
+2025-01-01,Mince Pies 6pk,1
+2025-01-01,Orange Juice 1L,6
+2025-01-01,PG Tips 80 Bags,5
+2025-01-01,Paracetamol 16 tabs,8
+2025-01-01,Ready Salted Crisps,21
+2025-01-01,White Bread 800g,15
+2025-01-02,Batteries AA 4pk,5
+2025-01-02,Bottled Water 500ml,6
+2025-01-02,Chocolate Bar,17
+2025-01-02,Cola 330ml,16
+2025-01-02,Greeting Cards,5
+2025-01-02,Ground Coffee 200g,5
+2025-01-02,Milk 2L,15
+2025-01-02,Mince Pies 6pk,3
+2025-01-02,Orange Juice 1L,11
+2025-01-02,PG Tips 80 Bags,7
+2025-01-02,Paracetamol 16 tabs,7
+2025-01-02,Ready Salted Crisps,19
+2025-01-02,White Bread 800g,13
+2025-01-03,Batteries AA 4pk,3
+2025-01-03,Bottled Water 500ml,6
+2025-01-03,Chocolate Bar,14
+2025-01-03,Cola 330ml,17
+2025-01-03,Greeting Cards,4
+2025-01-03,Ground Coffee 200g,7
+2025-01-03,Milk 2L,15
+2025-01-03,Mince Pies 6pk,4
+2025-01-03,Orange Juice 1L,8
+2025-01-03,PG Tips 80 Bags,3
+2025-01-03,Paracetamol 16 tabs,8
+2025-01-03,Ready Salted Crisps,22
+2025-01-03,White Bread 800g,16
+2025-01-04,Batteries AA 4pk,0
+2025-01-04,Bottled Water 500ml,4
+2025-01-04,Chocolate Bar,15
+2025-01-04,Cola 330ml,19
+2025-01-04,Greeting Cards,1
+2025-01-04,Ground Coffee 200g,4
+2025-01-04,Milk 2L,18
+2025-01-04,Mince Pies 6pk,0
+2025-01-04,Orange Juice 1L,9
+2025-01-04,PG Tips 80 Bags,4
+2025-01-04,Paracetamol 16 tabs,5
+2025-01-04,Ready Salted Crisps,22
+2025-01-04,White Bread 800g,11
+2025-01-05,Batteries AA 4pk,3
+2025-01-05,Bottled Water 500ml,5
+2025-01-05,Chocolate Bar,14
+2025-01-05,Cola 330ml,20
+2025-01-05,Greeting Cards,4
+2025-01-05,Ground Coffee 200g,2
+2025-01-05,Milk 2L,16
+2025-01-05,Mince Pies 6pk,1
+2025-01-05,Orange Juice 1L,7
+2025-01-05,PG Tips 80 Bags,8
+2025-01-05,Paracetamol 16 tabs,4
+2025-01-05,Ready Salted Crisps,23
+2025-01-05,White Bread 800g,14
+2025-01-06,Batteries AA 4pk,4
+2025-01-06,Bottled Water 500ml,2
+2025-01-06,Chocolate Bar,17
+2025-01-06,Cola 330ml,21
+2025-01-06,Greeting Cards,2
+2025-01-06,Ground Coffee 200g,2
+2025-01-06,Milk 2L,14
+2025-01-06,Mince Pies 6pk,0
+2025-01-06,Orange Juice 1L,7
+2025-01-06,PG Tips 80 Bags,6
+2025-01-06,Paracetamol 16 tabs,8
+2025-01-06,Ready Salted Crisps,21
+2025-01-06,White Bread 800g,11
+2025-01-07,Batteries AA 4pk,3
+2025-01-07,Bottled Water 500ml,6
+2025-01-07,Chocolate Bar,13
+2025-01-07,Cola 330ml,17
+2025-01-07,Greeting Cards,3
+2025-01-07,Ground Coffee 200g,6
+2025-01-07,Milk 2L,14
+2025-01-07,Mince Pies 6pk,3
+2025-01-07,Orange Juice 1L,8
+2025-01-07,PG Tips 80 Bags,4
+2025-01-07,Paracetamol 16 tabs,7
+2025-01-07,Ready Salted Crisps,21
+2025-01-07,White Bread 800g,12
+2025-01-08,Batteries AA 4pk,0
+2025-01-08,Bottled Water 500ml,6
+2025-01-08,Chocolate Bar,14
+2025-01-08,Cola 330ml,19
+2025-01-08,Greeting Cards,3
+2025-01-08,Ground Coffee 200g,6
+2025-01-08,Milk 2L,17
+2025-01-08,Mince Pies 6pk,1
+2025-01-08,Orange Juice 1L,8
+2025-01-08,PG Tips 80 Bags,8
+2025-01-08,Paracetamol 16 tabs,6
+2025-01-08,Ready Salted Crisps,18
+2025-01-08,White Bread 800g,12
+2025-01-09,Batteries AA 4pk,5
+2025-01-09,Bottled Water 500ml,6
+2025-01-09,Chocolate Bar,17
+2025-01-09,Cola 330ml,21
+2025-01-09,Greeting Cards,2
+2025-01-09,Ground Coffee 200g,6
+2025-01-09,Milk 2L,17
+2025-01-09,Mince Pies 6pk,0
+2025-01-09,Orange Juice 1L,6
+2025-01-09,PG Tips 80 Bags,3
+2025-01-09,Paracetamol 16 tabs,4
+2025-01-09,Ready Salted Crisps,20
+2025-01-09,White Bread 800g,12
+2025-01-10,Batteries AA 4pk,1
+2025-01-10,Bottled Water 500ml,4
+2025-01-10,Chocolate Bar,14
+2025-01-10,Cola 330ml,17
+2025-01-10,Greeting Cards,5
+2025-01-10,Ground Coffee 200g,4
+2025-01-10,Milk 2L,17
+2025-01-10,Mince Pies 6pk,1
+2025-01-10,Orange Juice 1L,8
+2025-01-10,PG Tips 80 Bags,3
+2025-01-10,Paracetamol 16 tabs,5
+2025-01-10,Ready Salted Crisps,19
+2025-01-10,White Bread 800g,16
+2025-01-11,Batteries AA 4pk,0
+2025-01-11,Bottled Water 500ml,5
+2025-01-11,Chocolate Bar,15
+2025-01-11,Cola 330ml,16
+2025-01-11,Greeting Cards,5
+2025-01-11,Ground Coffee 200g,2
+2025-01-11,Milk 2L,16
+2025-01-11,Mince Pies 6pk,1
+2025-01-11,Orange Juice 1L,9
+2025-01-11,PG Tips 80 Bags,6
+2025-01-11,Paracetamol 16 tabs,5
+2025-01-11,Ready Salted Crisps,21
+2025-01-11,White Bread 800g,14
+2025-01-12,Batteries AA 4pk,3
+2025-01-12,Bottled Water 500ml,3
+2025-01-12,Chocolate Bar,17
+2025-01-12,Cola 330ml,16
+2025-01-12,Greeting Cards,2
+2025-01-12,Ground Coffee 200g,2
+2025-01-12,Milk 2L,16
+2025-01-12,Mince Pies 6pk,5
+2025-01-12,Orange Juice 1L,9
+2025-01-12,PG Tips 80 Bags,6
+2025-01-12,Paracetamol 16 tabs,4
+2025-01-12,Ready Salted Crisps,20
+2025-01-12,White Bread 800g,16
+2025-01-13,Batteries AA 4pk,1
+2025-01-13,Bottled Water 500ml,6
+2025-01-13,Chocolate Bar,18
+2025-01-13,Cola 330ml,18
+2025-01-13,Greeting Cards,1
+2025-01-13,Ground Coffee 200g,7
+2025-01-13,Milk 2L,19
+2025-01-13,Mince Pies 6pk,2
+2025-01-13,Orange Juice 1L,7
+2025-01-13,PG Tips 80 Bags,8
+2025-01-13,Paracetamol 16 tabs,8
+2025-01-13,Ready Salted Crisps,23
+2025-01-13,White Bread 800g,12
+2025-01-14,Batteries AA 4pk,3
+2025-01-14,Bottled Water 500ml,3
+2025-01-14,Chocolate Bar,16
+2025-01-14,Cola 330ml,16
+2025-01-14,Greeting Cards,4
+2025-01-14,Ground Coffee 200g,5
+2025-01-14,Milk 2L,16
+2025-01-14,Mince Pies 6pk,0
+2025-01-14,Orange Juice 1L,10
+2025-01-14,PG Tips 80 Bags,5
+2025-01-14,Paracetamol 16 tabs,8
+2025-01-14,Ready Salted Crisps,20
+2025-01-14,White Bread 800g,14

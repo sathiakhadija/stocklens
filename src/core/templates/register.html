@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StockLens — Create Account</title>
+  <link rel="icon" href="{{ url_for('static', filename='brand-icon.png') }}" type="image/png" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <script>
+    document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+  </script>
+</head>
+<body>
+
+  <nav class="auth-nav">
+    <div class="hp-logo">
+      <div class="hp-logo-mark">
+        <img src="{{ url_for('static', filename='brand-icon.png') }}" alt="" />
+      </div>
+      <span class="hp-logo-name">Stock<em>Lens</em></span>
+    </div>
+    <div class="auth-nav-actions">
+      <select id="lang-select" class="lang-select" title="Language" data-i18n-title="common.language">
+        <option value="en">🇬🇧 EN</option><option value="es">🇪🇸 ES</option><option value="ar">🇸🇦 AR</option><option value="fr">🇫🇷 FR</option><option value="de">🇩🇪 DE</option><option value="pt">🇧🇷 PT</option><option value="hi">🇮🇳 HI</option><option value="ur">🇵🇰 UR</option><option value="tr">🇹🇷 TR</option><option value="bn">🇧🇩 BN</option><option value="zh">🇨🇳 ZH</option><option value="id">🇮🇩 ID</option><option value="th">🇹🇭 TH</option><option value="vi">🇻🇳 VI</option>
+      </select>
+      <a class="btn btn-out btn-sm" href="/" data-i18n="auth.backHome">← Back to home</a>
+    </div>
+  </nav>
+
+  <div class="auth-bg">
+    <div class="ao1"></div>
+    <div class="ao2"></div>
+
+    <div class="auth-card-v3">
+      <div class="auth-logo-v3">
+        <div class="alm">
+          <img src="{{ url_for('static', filename='brand-icon.png') }}" alt="" />
+        </div>
+        <span class="auth-brand">Stock<em>Lens</em></span>
+      </div>
+
+      <div class="auth-tabs">
+        <div class="auth-tab" id="tab-login" onclick="window.location.href='/login'" data-i18n="auth.signIn">Sign in</div>
+        <div class="auth-tab on" id="tab-register" data-i18n="auth.createAccount">Create account</div>
+      </div>
+
+      <!-- Register form -->
+      <div id="register-form">
+        <div class="fg">
+          <label class="fl" data-i18n="auth.name">Your name</label>
+          <input class="fi" type="text" id="username" placeholder="e.g. Sarah" data-i18n-placeholder="auth.namePlaceholder" autocomplete="name" />
+        </div>
+        <div class="fg">
+          <label class="fl" data-i18n="auth.email">Email</label>
+          <input class="fi" type="email" id="email" placeholder="you@yourshop.com" data-i18n-placeholder="auth.emailPlaceholder" autocomplete="email" />
+        </div>
+        <div class="fg">
+          <label class="fl" data-i18n="auth.password">Password</label>
+          <div style="position:relative">
+            <input class="fi" type="password" id="password" placeholder="Choose a strong password" data-i18n-placeholder="auth.passwordPlaceholder" autocomplete="new-password" style="padding-right:36px" />
+            <button type="button" id="toggle-password" class="password-icon-btn" tabindex="-1" data-i18n-title="auth.showPassword" aria-label="Show password" data-i18n-aria="auth.showPassword">
+              <svg id="password-eye" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="password-meter" aria-hidden="true"><span id="password-meter-fill"></span></div>
+          <div class="password-feedback" id="password-feedback">Use at least 8 characters with letters and numbers.</div>
+        </div>
+        <div class="fg">
+          <label class="fl" data-i18n="auth.confirmPassword">Confirm password</label>
+          <input class="fi" type="password" id="confirm_password" placeholder="••••••••" data-i18n-placeholder="auth.confirmPasswordPlaceholder" autocomplete="new-password" />
+          <div class="password-feedback" id="match-feedback"></div>
+        </div>
+
+        <div class="invite-note-v3"><strong data-i18n="auth.inviteNote">Have an invite code?</strong> <span data-i18n="auth.inviteNoteBody">Enter it to join your team. Leave blank to create a new company.</span></div>
+        <div class="fg">
+          <label class="fl"><span data-i18n="auth.inviteCode">Invite code</span> <span style="font-weight:400;text-transform:none;letter-spacing:0" data-i18n="auth.optional">(optional)</span></label>
+          <input class="fi" type="text" id="invite_code" maxlength="6" placeholder="e.g. X4K9MQ" data-i18n-placeholder="auth.invitePlaceholder" autocomplete="off" style="text-transform:uppercase;letter-spacing:.1em" />
+        </div>
+
+        <button class="auth-submit-v3" id="register-btn" data-i18n="auth.registerSubmit">Create my account →</button>
+        <p class="error-msg" id="error-msg" style="display:none;color:#DC2626;font-size:11px;margin-top:8px;text-align:center"></p>
+
+        <div class="auth-sw-v3" style="margin-top:11px"><span data-i18n="auth.haveAccount">Have an account?</span> <a href="/login" data-i18n="auth.signInArrow">Sign in →</a></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/translations.js') }}"></script>
+  <script>
+    // Password toggle
+    let showPw = false;
+    document.getElementById('toggle-password').addEventListener('click', () => {
+      showPw = !showPw;
+      document.getElementById('password').type = showPw ? 'text' : 'password';
+      document.getElementById('password-eye').innerHTML = showPw
+        ? '<path d="M17.9 17.9A10.4 10.4 0 0 1 12 20C5.5 20 2 12 2 12a18.8 18.8 0 0 1 4.2-5.8"/><path d="M9.9 4.2A9.5 9.5 0 0 1 12 4c6.5 0 10 8 10 8a18.5 18.5 0 0 1-2.1 3.2"/><path d="M14.1 14.1A3 3 0 0 1 9.9 9.9"/><path d="M3 3l18 18"/>'
+        : '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>';
+    });
+
+    function updatePasswordFeedback() {
+      const password = document.getElementById('password').value;
+      const confirm = document.getElementById('confirm_password').value;
+      const fill = document.getElementById('password-meter-fill');
+      const feedback = document.getElementById('password-feedback');
+      const match = document.getElementById('match-feedback');
+      let score = 0;
+      if (password.length >= 8) score++;
+      if (/[A-Z]/.test(password) && /[a-z]/.test(password)) score++;
+      if (/\d/.test(password)) score++;
+      if (/[^A-Za-z0-9]/.test(password)) score++;
+      const states = [
+        { cls: 'weak', width: '25%', text: 'Weak password' },
+        { cls: 'weak', width: '40%', text: 'Weak password' },
+        { cls: 'medium', width: '65%', text: 'Medium password' },
+        { cls: 'strong', width: '100%', text: 'Strong password' },
+      ];
+      const state = states[Math.max(0, Math.min(score - 1, states.length - 1))] || states[0];
+      fill.className = state.cls;
+      fill.style.width = password ? state.width : '0';
+      feedback.textContent = password ? state.text : 'Use at least 8 characters with letters and numbers.';
+      feedback.className = 'password-feedback ' + (score >= 3 ? 'ok' : '');
+      if (!confirm) {
+        match.textContent = '';
+        match.className = 'password-feedback';
+      } else {
+        const ok = password === confirm;
+        match.textContent = ok ? 'Passwords match.' : 'Passwords do not match.';
+        match.className = 'password-feedback ' + (ok ? 'ok' : 'bad');
+      }
+    }
+    document.getElementById('password').addEventListener('input', updatePasswordFeedback);
+    document.getElementById('confirm_password').addEventListener('input', updatePasswordFeedback);
+
+    // Uppercase invite code
+    document.getElementById('invite_code').addEventListener('input', function() {
+      this.value = this.value.toUpperCase();
+    });
+
+    async function doRegister() {
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim().toLowerCase();
+      const password = document.getElementById('password').value;
+      const confirm = document.getElementById('confirm_password').value;
+      const invite_code = document.getElementById('invite_code').value.trim().toUpperCase();
+      const errEl = document.getElementById('error-msg');
+      errEl.style.display = 'none';
+
+      if (!username || !email || !password || !confirm) {
+        errEl.textContent = t('msg.requiredFields');
+        errEl.style.display = 'block';
+        return;
+      }
+      if (password !== confirm) {
+        errEl.textContent = t('msg.passwordMismatch');
+        errEl.style.display = 'block';
+        return;
+      }
+      if (password.length < 8) {
+        errEl.textContent = t('msg.passwordLength');
+        errEl.style.display = 'block';
+        return;
+      }
+
+      const btn = document.getElementById('register-btn');
+      btn.disabled = true;
+      btn.textContent = t('auth.creatingAccount');
+
+      try {
+        const res = await fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ username, email, password, invite_code }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || t('msg.registrationFailed'));
+        if (data.email_verification_url) {
+          sessionStorage.setItem('pending_verification_url', data.email_verification_url);
+        }
+        window.location.href = data.onboarding_required ? '/onboarding' : '/dashboard';
+      } catch (err) {
+        errEl.textContent = err.message;
+        errEl.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = t('auth.registerSubmit').replace(/->/g, '→');
+      }
+    }
+
+    document.getElementById('register-btn').addEventListener('click', doRegister);
+    document.getElementById('confirm_password').addEventListener('keydown', e => {
+      if (e.key === 'Enter') doRegister();
+    });
+  </script>
+</body>
+</html>

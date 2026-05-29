@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StockLens — Inventory decisions before stockouts happen</title>
+  <link rel="icon" href="{{ url_for('static', filename='brand-icon.png') }}" type="image/png" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+
+  <nav class="hp-nav">
+    <a class="hp-logo" href="/">
+      <div class="hp-logo-mark">
+        <img src="{{ url_for('static', filename='brand-icon.png') }}" alt="" />
+      </div>
+      <span class="hp-logo-name">Stock<em>Lens</em></span>
+    </a>
+    <div class="hp-nav-r">
+      <select id="lang-select" class="lang-select" title="Language" data-i18n-title="common.language">
+        <option value="en">🇬🇧 EN</option><option value="es">🇪🇸 ES</option><option value="ar">🇸🇦 AR</option><option value="fr">🇫🇷 FR</option><option value="de">🇩🇪 DE</option><option value="pt">🇧🇷 PT</option><option value="hi">🇮🇳 HI</option><option value="ur">🇵🇰 UR</option><option value="tr">🇹🇷 TR</option><option value="bn">🇧🇩 BN</option><option value="zh">🇨🇳 ZH</option><option value="id">🇮🇩 ID</option><option value="th">🇹🇭 TH</option><option value="vi">🇻🇳 VI</option>
+      </select>
+      <a class="btn btn-out btn-sm" href="/login" data-i18n="home.signIn">Sign in</a>
+      <a class="btn btn-g btn-sm" href="/register" data-i18n="home.startFree">Start free →</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hp-hero">
+      <div class="hp-hero-inner">
+        <div class="hp-copy">
+          <div class="hp-tag"><div class="ld"></div>For independent retailers</div>
+          <h1 class="hp-h1"><span class="stk">Stop guessing what to reorder.</span>Know it <span class="hl">instantly.</span></h1>
+          <p class="hp-sub">Upload your sales data and StockLens turns it into clear reorder, at-risk, and hold decisions before shelves go empty.</p>
+          <div class="hp-cta">
+            <a class="btn btn-g btn-lg" href="/register" data-i18n="home.ctaUpload">Upload your first file free →</a>
+            <a class="btn btn-out btn-lg" href="#how-it-works" data-i18n="home.ctaHow">See how it works</a>
+          </div>
+          <div class="hp-proof">
+            <span>No credit card</span>
+            <span>CSV or Excel</span>
+            <span>Setup in 2 minutes</span>
+          </div>
+        </div>
+
+        <div class="hp-dash" aria-label="StockLens dashboard preview" data-i18n-aria="common.dashboardPreview">
+          <div class="hp-card">
+            <div class="dt">
+              <div class="dt-dots">
+                <div class="dt-dot" style="background:#FF5F57"></div>
+                <div class="dt-dot" style="background:#FFBD2E"></div>
+                <div class="dt-dot" style="background:#28C840"></div>
+              </div>
+              <div class="dt-url">stocklens.app · Decision overview</div>
+            </div>
+            <div class="m-head">
+              <div>
+                <div class="m-eyebrow">Today</div>
+                <div class="m-title">Inventory decisions</div>
+              </div>
+              <div class="m-health">Live accuracy</div>
+            </div>
+            <div class="m-kpis">
+              <div class="m-kpi"><div class="m-kv critical">3</div><div class="m-kl">Reorder now</div></div>
+              <div class="m-kpi"><div class="m-kv">48</div><div class="m-kl">Products</div></div>
+              <div class="m-kpi"><div class="m-kv blue">£48k</div><div class="m-kl">Stock value</div></div>
+            </div>
+            <div class="m-decs">
+              <div class="m-dc dc-r">
+                <div class="m-dc-top"><div class="m-db" data-i18n="action.reorder">REORDER</div><span>3 days left</span></div>
+                <div class="m-dn">Widget A</div>
+                <div class="m-dw">Order 120 units this week.</div>
+                <div class="m-bar"><div class="m-bar-f critical" style="width:14%"></div></div>
+              </div>
+              <div class="m-dc dc-w">
+                <div class="m-dc-top"><div class="m-db" data-i18n="action.at_risk">AT_RISK</div><span>Watch</span></div>
+                <div class="m-dn">Module D</div>
+                <div class="m-dw">Getting low. Monitor daily.</div>
+                <div class="m-bar"><div class="m-bar-f warn" style="width:35%"></div></div>
+              </div>
+              <div class="m-dc dc-h">
+                <div class="m-dc-top"><div class="m-db" data-i18n="action.hold">HOLD</div><span>Healthy</span></div>
+                <div class="m-dn">Cable Y</div>
+                <div class="m-dw">90+ days of stock. Fine.</div>
+                <div class="m-bar"><div class="m-bar-f good" style="width:88%"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hp-sec">
+      <div class="hp-sec-inner">
+        <span class="sec-tag">The problem</span>
+        <h2 class="sec-h">Running out of stock costs more than you think</h2>
+        <p class="sec-s">Every stockout is a lost sale. Most small retailers manage inventory with gut feel — and pay for it every week.</p>
+        <div class="pain-grid">
+          <div class="pc">
+            <div class="p-ico" style="background:rgba(220,38,38,.1)">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#DC2626" stroke-width="1.6"><path d="M8 2v5M8 10v.4M2 14h12L8 2 2 14z"/></svg>
+            </div>
+            <div class="p-t">You only reorder when you run out</div>
+            <div class="p-b">By the time you notice, it's too late. Lost sales, emergency orders, customers going elsewhere.</div>
+            <div class="p-arr">StockLens predicts it 7 days early <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 5h8M5 1l4 4-4 4"/></svg></div>
+          </div>
+          <div class="pc">
+            <div class="p-ico" style="background:rgba(245,158,11,.1)">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#F59E0B" stroke-width="1.6"><rect x="2" y="2" width="12" height="12" rx="1.5"/><path d="M2 6.5h12M6.5 2v12"/></svg>
+            </div>
+            <div class="p-t">Your spreadsheet doesn't forecast</div>
+            <div class="p-b">A spreadsheet shows the past. It can't tell you what stock you'll need next week.</div>
+            <div class="p-arr">StockLens runs 4 models automatically <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 5h8M5 1l4 4-4 4"/></svg></div>
+          </div>
+          <div class="pc">
+            <div class="p-ico" style="background:rgba(14,165,233,.1)">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#0EA5E9" stroke-width="1.6"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 2"/></svg>
+            </div>
+            <div class="p-t">Enterprise tools cost thousands</div>
+            <div class="p-b">SAP and Oracle assume you have a supply chain team. You don't — and you shouldn't need one.</div>
+            <div class="p-arr">StockLens works on your laptop today <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 5h8M5 1l4 4-4 4"/></svg></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-sec" id="how-it-works">
+      <div class="how-inner">
+        <span class="sec-tag">How it works</span>
+        <h2 class="sec-h">Three steps. No training needed.</h2>
+        <p class="sec-s">If you can export from your till or Shopify, you can use StockLens.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-l"><div class="step-n">1</div><div class="step-conn"></div></div>
+            <div class="step-c">
+              <div class="step-title">Drop in your sales file</div>
+              <div class="step-body">Upload any CSV or Excel export. StockLens auto-detects columns, handles messy data, and cleans duplicates. No template needed.</div>
+              <span class="step-chip">Works with 60+ column formats · 18+ date formats</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-l"><div class="step-n">2</div><div class="step-conn"></div></div>
+            <div class="step-c">
+              <div class="step-title">Demand is forecast after each upload</div>
+              <div class="step-body">Four models compete on your data. Uploads trigger the pipeline automatically; manual entries can be forecast from the dashboard when your data is ready.</div>
+              <span class="step-chip">SMA · WMA · Exponential smoothing · Holt's linear trend</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-l"><div class="step-n">3</div></div>
+            <div class="step-c">
+              <div class="step-title">Get one clear decision per product</div>
+              <div class="step-body">Every product gets a plain-English verdict with the reasoning attached. StockLens never orders automatically — you stay in control.</div>
+              <span class="step-chip">REORDER · AT_RISK · HOLD · with full explanation</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-sec">
+      <div class="cta-box">
+        <h2 class="cta-h" data-i18n-html="home.ctaTitle">Stop running out of stock.<br>Start this week.</h2>
+        <p class="cta-s">Upload one sales file and see your first reorder decisions in under two minutes. No credit card. No spreadsheet.</p>
+        <div class="cta-btns">
+          <a class="btn btn-wh btn-lg" href="/register" data-i18n="home.ctaUploadShort">Upload my first file →</a>
+          <a class="btn btn-dk btn-lg" href="/login" data-i18n="home.ctaLogin">Sign in to my account</a>
+        </div>
+        <p class="cta-note" data-i18n="home.ctaNote">Free to start · No card required · Works with any file</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="hp-footer">
+    <div class="hp-logo">
+      <div class="hp-logo-mark" style="width:20px;height:20px;border-radius:5px">
+        <img src="{{ url_for('static', filename='brand-icon.png') }}" alt="" />
+      </div>
+      <span style="font-size:12px;font-weight:700">Stock<em style="font-style:normal;color:#3D8565">Lens</em></span>
+    </div>
+    <div style="display:flex;gap:12px">
+      <a href="/privacy" data-i18n="home.privacy">Privacy</a><a href="/terms" data-i18n="home.terms">Terms</a><a href="/contact" data-i18n="home.contact">Contact</a>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/translations.js') }}"></script>
+</body>
+</html>

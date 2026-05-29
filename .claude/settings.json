@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(update-config)",
+      "Skill(update-config:*)",
+      "Bash(python3 run.py)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:5001/)",
+      "Bash(pkill -f \"python3 run.py\")",
+      "Bash(curl -s http://127.0.0.1:5001/)"
+    ],
+    "additionalDirectories": [
+      "/Users/sathiakhadija/.claude",
+      "/Users/sathiakhadija/Desktop/Stocklens"
+    ]
+  }
+}

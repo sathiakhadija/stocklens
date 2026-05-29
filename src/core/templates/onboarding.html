@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StockLens — Setup</title>
+  <link rel="icon" href="{{ url_for('static', filename='brand-icon.png') }}" type="image/png" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <script>
+    document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+  </script>
+</head>
+<body>
+
+  <nav class="auth-nav">
+    <div class="hp-logo">
+      <div class="hp-logo-mark">
+        <img src="{{ url_for('static', filename='brand-icon.png') }}" alt="" />
+      </div>
+      <span class="hp-logo-name">Stock<em>Lens</em></span>
+    </div>
+    <div class="auth-nav-actions">
+      <select id="lang-select" class="lang-select" title="Language" data-i18n-title="common.language">
+        <option value="en">🇬🇧 EN</option><option value="es">🇪🇸 ES</option><option value="ar">🇸🇦 AR</option><option value="fr">🇫🇷 FR</option><option value="de">🇩🇪 DE</option><option value="pt">🇧🇷 PT</option><option value="hi">🇮🇳 HI</option><option value="ur">🇵🇰 UR</option><option value="tr">🇹🇷 TR</option><option value="bn">🇧🇩 BN</option><option value="zh">🇨🇳 ZH</option><option value="id">🇮🇩 ID</option><option value="th">🇹🇭 TH</option><option value="vi">🇻🇳 VI</option>
+      </select>
+      <div style="font-size:11px;color:#64748B" data-i18n="onboarding.navStep">Step 2 of 2 — Workspace setup</div>
+    </div>
+  </nav>
+
+  <div class="auth-bg">
+    <div class="ao1"></div>
+    <div class="ao2"></div>
+
+    <div class="onb-card">
+
+      <!-- Progress bar -->
+      <div class="onb-bar">
+        <div class="onb-d done" id="bar-1"></div>
+        <div class="onb-d done" id="bar-2"></div>
+        <div class="onb-d" id="bar-3"></div>
+      </div>
+
+      <!-- Step 1: Welcome -->
+      <section class="onb-step active" id="screen-1">
+        <div style="text-align:center;margin-bottom:24px">
+          <div style="width:56px;height:56px;border-radius:16px;margin:0 auto 14px;background:linear-gradient(135deg,#1B4332,#3D8565);box-shadow:0 4px 16px rgba(61,133,101,.35);display:flex;align-items:center;justify-content:center">
+            <img class="brand-icon-img" src="{{ url_for('static', filename='brand-icon.png') }}" alt="" />
+          </div>
+          <div class="onb-title" data-i18n="onboarding.welcomeTitle">Welcome to StockLens</div>
+          <div class="onb-sub" data-i18n="onboarding.welcomeSub">Let's set up your inventory management system in a few steps.</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px">
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:10px;background:#F8FAFC;border:.5px solid #E2E8F0">
+            <div style="width:22px;height:22px;border-radius:50%;background:#DDF0E6;border:2px solid #B7D9C8;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#3D8565;flex-shrink:0">1</div>
+            <div>
+              <div style="font-weight:600;font-size:12px;margin-bottom:2px" data-i18n="onboarding.feature1Title">Data-Driven Decisions</div>
+              <div style="color:#64748B;font-size:11px" data-i18n="onboarding.feature1Body">AI-powered recommendations for reordering and stock optimisation</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:10px;background:#F8FAFC;border:.5px solid #E2E8F0">
+            <div style="width:22px;height:22px;border-radius:50%;background:#DDF0E6;border:2px solid #B7D9C8;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#3D8565;flex-shrink:0">2</div>
+            <div>
+              <div style="font-weight:600;font-size:12px;margin-bottom:2px" data-i18n="onboarding.feature2Title">Forecast Accuracy</div>
+              <div style="color:#64748B;font-size:11px" data-i18n="onboarding.feature2Body">Advanced models (SMA, WMA, SES, Holt) tailored to your data</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:10px;background:#F8FAFC;border:.5px solid #E2E8F0">
+            <div style="width:22px;height:22px;border-radius:50%;background:#DDF0E6;border:2px solid #B7D9C8;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#3D8565;flex-shrink:0">3</div>
+            <div>
+              <div style="font-weight:600;font-size:12px;margin-bottom:2px" data-i18n="onboarding.feature3Title">ABC-XYZ Analysis</div>
+              <div style="color:#64748B;font-size:11px" data-i18n="onboarding.feature3Body">Classify inventory by value and variability for smarter prioritisation</div>
+            </div>
+          </div>
+        </div>
+
+        <button class="auth-submit-v3" id="to-step-2" data-i18n="onboarding.getStarted">Get Started →</button>
+      </section>
+
+      <!-- Step 2: Company setup -->
+      <section class="onb-step" id="screen-2" style="display:none">
+        <div class="onb-title" data-i18n="onboarding.workspaceTitle">Set up your workspace</div>
+        <div class="onb-sub" data-i18n="onboarding.workspaceSub">Give your company a name so your team can find you. You'll be the manager with full access.</div>
+
+        <div class="fg">
+          <label class="fl" data-i18n="onboarding.companyName">Company name</label>
+          <input class="fi" type="text" id="company_name" placeholder="e.g. BrightMart" data-i18n-placeholder="onboarding.companyPlaceholder" />
+        </div>
+
+        <div class="fg" id="staff-invite-field" style="display:none">
+          <label class="fl">Invite code</label>
+          <input class="fi" type="text" id="staff_invite_code" maxlength="6" placeholder="e.g. X4K9MQ" autocomplete="off" style="text-transform:uppercase;letter-spacing:.1em" />
+          <div class="password-feedback">Staff members need a manager invite code to join an existing company.</div>
+        </div>
+
+        <div class="fg">
+          <label class="fl" style="margin-bottom:8px" data-i18n="onboarding.roleLabel">Your role in the business</label>
+          <div class="role-cards">
+            <div class="role-card sel" id="role-manager" onclick="selectRole('manager')">
+              <div class="rc-icon">👔</div>
+              <div class="rc-title" data-i18n="onboarding.managerOwner">Manager / Owner</div>
+              <div class="rc-body" data-i18n="onboarding.managerBody">Full access — upload data, run forecasts, manage team</div>
+            </div>
+            <div class="role-card" id="role-staff" onclick="selectRole('staff')">
+              <div class="rc-icon">🛍️</div>
+              <div class="rc-title" data-i18n="onboarding.staffMember">Staff member</div>
+              <div class="rc-body" data-i18n="onboarding.staffBody">View inventory and decisions read-only</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fg">
+          <label class="fl" data-i18n="onboarding.industry">Industry</label>
+          <select class="fi" id="industry">
+            <option value="Grocery" data-i18n="industry.grocery">Grocery</option>
+            <option value="Pharmacy" data-i18n="industry.pharmacy">Pharmacy</option>
+            <option value="Clothing" data-i18n="industry.clothing">Clothing</option>
+            <option value="Electronics" data-i18n="industry.electronics">Electronics</option>
+            <option value="General Retail" selected data-i18n="industry.generalRetail">General Retail</option>
+            <option value="Other" data-i18n="industry.other">Other</option>
+          </select>
+        </div>
+
+        <div class="fg">
+          <label class="fl"><span data-i18n="onboarding.description">Description</span> <span style="font-weight:400;text-transform:none;letter-spacing:0" data-i18n="auth.optional">(optional)</span></label>
+          <textarea id="description" placeholder="Short business description" data-i18n-placeholder="onboarding.descriptionPlaceholder" class="fi" style="min-height:72px;resize:vertical"></textarea>
+        </div>
+
+        <button class="auth-submit-v3" id="create-company-btn" data-i18n="onboarding.createWorkspace">Create workspace and continue →</button>
+        <p class="error-msg" id="error-msg" style="display:none;color:#DC2626;font-size:11px;margin-top:8px;text-align:center"></p>
+
+        <div class="auth-sw-v3" style="margin-top:10px"><span data-i18n="auth.inviteNote">Have an invite code?</span> <a href="#" id="join-link" data-i18n="onboarding.joinExisting">Join an existing company instead →</a></div>
+      </section>
+
+      <!-- Step 3: Done -->
+      <section class="onb-step" id="screen-3" style="display:none">
+        <div style="text-align:center;margin-bottom:22px">
+          <div style="width:56px;height:56px;background:#ECFDF5;border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#16A34A" stroke-width="2"><circle cx="14" cy="14" r="11"/><polyline points="9,14 12,17 19,10"/></svg>
+          </div>
+          <div class="onb-title" data-i18n="onboarding.doneTitle">You're all set!</div>
+          <div class="onb-sub" data-i18n="onboarding.doneSub">Your StockLens workspace is ready. Invite your team using the code below.</div>
+        </div>
+
+        <div style="background:#EEF8F2;border-radius:10px;padding:14px;margin-bottom:18px;text-align:center;border:1px dashed #B7D9C8">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#64748B;margin-bottom:6px" data-i18n="onboarding.yourInviteCode">Your Invite Code</div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:9px">
+            <div style="font-family:monospace;font-size:22px;font-weight:800;color:#3D8565;letter-spacing:.15em" id="invite-code">------</div>
+            <button id="copy-invite-btn" data-i18n="common.copy" style="padding:5px 9px;border-radius:7px;border:.5px solid #B7D9C8;background:#fff;cursor:pointer;font-size:11px;font-weight:600;color:#3D8565">Copy</button>
+          </div>
+          <div id="copy-success" style="font-size:11px;color:#16A34A;margin-top:6px;display:none" data-i18n="msg.copiedClipboard">Copied to clipboard!</div>
+        </div>
+
+        <button class="auth-submit-v3" onclick="window.location.href='/dashboard'" data-i18n="onboarding.goDashboard">Go to Dashboard →</button>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/translations.js') }}"></script>
+  <script>
+    window.STOCKLENS_CSRF_TOKEN = {{ csrf_token|tojson }};
+    let step = 1;
+    let selectedRole = 'manager';
+
+    function updateBars() {
+      document.getElementById('bar-1').classList.toggle('done', step >= 1);
+      document.getElementById('bar-2').classList.toggle('done', step >= 2);
+      document.getElementById('bar-3').classList.toggle('done', step >= 3);
+    }
+
+    function goTo(n) {
+      document.querySelectorAll('.onb-step').forEach(s => s.style.display = 'none');
+      document.getElementById('screen-' + n).style.display = 'block';
+      step = n;
+      updateBars();
+    }
+
+    function selectRole(role) {
+      selectedRole = role;
+      document.getElementById('role-manager').classList.toggle('sel', role === 'manager');
+      document.getElementById('role-staff').classList.toggle('sel', role === 'staff');
+      document.getElementById('staff-invite-field').style.display = role === 'staff' ? 'block' : 'none';
+      document.getElementById('company_name').closest('.fg').style.display = role === 'staff' ? 'none' : 'block';
+      document.getElementById('industry').closest('.fg').style.display = role === 'staff' ? 'none' : 'block';
+      document.getElementById('description').closest('.fg').style.display = role === 'staff' ? 'none' : 'block';
+      document.getElementById('create-company-btn').textContent = role === 'staff'
+        ? 'Join workspace and continue →'
+        : t('onboarding.createWorkspace').replace(/->/g, '→');
+    }
+
+    document.getElementById('staff_invite_code').addEventListener('input', function() {
+      this.value = this.value.toUpperCase();
+    });
+
+    document.getElementById('to-step-2').addEventListener('click', () => goTo(2));
+    document.getElementById('join-link').addEventListener('click', (e) => {
+      e.preventDefault();
+      selectRole('staff');
+      document.getElementById('staff_invite_code').focus();
+    });
+
+    document.getElementById('create-company-btn').addEventListener('click', async () => {
+      const company_name = document.getElementById('company_name').value.trim();
+      const industry = document.getElementById('industry').value;
+      const description = document.getElementById('description').value.trim();
+      const code = document.getElementById('staff_invite_code').value.trim().toUpperCase();
+      const errEl = document.getElementById('error-msg');
+      errEl.style.display = 'none';
+
+      if (selectedRole === 'staff') {
+        if (!code) {
+          errEl.textContent = t('msg.inviteRequiredStaff');
+          errEl.style.display = 'block';
+          return;
+        }
+      } else if (!company_name) {
+        errEl.textContent = t('msg.companyRequired');
+        errEl.style.display = 'block';
+        return;
+      }
+
+      const btn = document.getElementById('create-company-btn');
+      btn.disabled = true;
+      btn.textContent = t('onboarding.settingUp');
+
+      try {
+        const url = selectedRole === 'staff' ? '/api/invite/join' : '/api/company/create';
+        const payload = selectedRole === 'staff'
+          ? { code }
+          : { company_name, industry, description };
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': window.STOCKLENS_CSRF_TOKEN || '',
+          },
+          credentials: 'include',
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || t('msg.companyCreateFailed'));
+        if (selectedRole === 'staff') {
+          window.location.href = '/dashboard';
+          return;
+        }
+        document.getElementById('invite-code').textContent = data.invite_code || '------';
+        goTo(3);
+      } catch (err) {
+        errEl.textContent = err.message;
+        errEl.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = t('onboarding.createWorkspace').replace(/->/g, '→');
+      }
+    });
+
+    document.getElementById('copy-invite-btn').addEventListener('click', () => {
+      const code = document.getElementById('invite-code').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        const el = document.getElementById('copy-success');
+        el.style.display = 'block';
+        setTimeout(() => { el.style.display = 'none'; }, 2000);
+      });
+    });
+
+    updateBars();
+  </script>
+</body>
+</html>

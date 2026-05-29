@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StockLens — {{ page_title }}</title>
+  <link rel="icon" href="{{ url_for('static', filename='brand-icon.png') }}" type="image/png" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <script>
+    document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+  </script>
+</head>
+<body>
+  <nav class="auth-nav">
+    <a class="hp-logo" href="/">
+      <div class="hp-logo-mark"><img src="{{ url_for('static', filename='brand-icon.png') }}" alt="" /></div>
+      <span class="hp-logo-name">Stock<em>Lens</em></span>
+    </a>
+    <a class="btn btn-out btn-sm" href="/">Back to home</a>
+  </nav>
+  <main class="auth-bg">
+    <section class="auth-card-v3" style="max-width:620px">
+      <h1 class="onb-title">{{ page_title }}</h1>
+      <p class="onb-sub" style="margin-bottom:0">{{ body }}</p>
+    </section>
+  </main>
+</body>
+</html>

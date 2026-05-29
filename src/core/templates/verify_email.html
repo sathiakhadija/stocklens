@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StockLens — Verify Email</title>
+  <link rel="icon" href="{{ url_for('static', filename='brand-icon.png') }}" type="image/png" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');</script>
+</head>
+<body>
+  <nav class="auth-nav"><a class="hp-logo" href="/"><div class="hp-logo-mark"><img src="{{ url_for('static', filename='brand-icon.png') }}" alt="" /></div><span class="hp-logo-name">Stock<em>Lens</em></span></a></nav>
+  <div class="auth-bg">
+    <div class="auth-card-v3">
+      <h1 class="onb-title" data-i18n="auth.verifyTitle">Verify email</h1>
+      <p class="onb-sub" id="verify-msg" data-i18n="auth.checkingVerification">Checking your verification link...</p>
+      <a class="auth-submit-v3" href="/dashboard" style="display:none;text-align:center;text-decoration:none" id="continue-link" data-i18n="common.continue">Continue</a>
+    </div>
+  </div>
+  <script src="{{ url_for('static', filename='js/translations.js') }}"></script>
+  <script>
+    fetch('/api/email/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ token: {{ token|tojson }} }),
+    }).then(r => r.json().then(data => ({ ok: r.ok, data }))).then(({ ok, data }) => {
+      document.getElementById('verify-msg').textContent = translateServerMessage(data.message) || (ok ? t('auth.emailVerified') : t('auth.verificationFailed'));
+      if (ok) document.getElementById('continue-link').style.display = 'block';
+    });
+  </script>
+</body>
+</html>

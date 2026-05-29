@@ -1,0 +1,11 @@
+[tool.ruff]
+force-exclude = true
+exclude = [
+    "src/core/app.py",
+    "src/core/routes/api.py",
+    "src/core/routes/manual.py",
+    "src/core/services/abc_xyz_service.py",
+    "src/core/services/decision_service.py",
+    "src/core/services/scenario_service.py",
+    "src/setup/create_db.py",
+]

@@ -1,0 +1,34 @@
+services:
+  flask-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.flask
+    ports:
+      - "5001:5001"
+    environment:
+      - APP_ENV=production
+      - FLASK_ENV=production
+      - SECRET_KEY=${SECRET_KEY:-stocklens-local-compose-secret-key-change-before-production}
+      - SESSION_COOKIE_SECURE=1
+      - PORT=5001
+    volumes:
+      - stocklens-db:/app/db
+    restart: unless-stopped
+
+  fastapi-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.fastapi
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=production
+      - SECRET_KEY=${SECRET_KEY:-stocklens-local-compose-secret-key-change-before-production}
+    volumes:
+      - stocklens-db:/app/db
+    depends_on:
+      - flask-app
+    restart: unless-stopped
+
+volumes:
+  stocklens-db:
