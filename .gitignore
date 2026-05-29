@@ -29,7 +29,7 @@ ENV/
 .env.*.local
 
 # Database (local only — demo db is seeded at build time)
-db/*.db
+db/*.db-journal
 
 # IDE
 .DS_Store

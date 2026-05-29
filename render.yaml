@@ -3,7 +3,7 @@ services:
     name: stocklens
     runtime: python
     pythonVersion: "3.12.0"
-    buildCommand: pip install -r requirements.txt
+    buildCommand: bash build.sh
     startCommand: gunicorn wsgi:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120
     envVars:
       - key: APP_ENV
@@ -11,4 +11,4 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: SESSION_COOKIE_SECURE
-        value: "1"
+        value: "0"
